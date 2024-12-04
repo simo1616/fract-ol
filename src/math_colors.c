@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   funct_utils2.c                                     :+:      :+:    :+:   */
+/*   math_colors.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbendidi <mbendidi@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/03 19:39:33 by mbendidi          #+#    #+#             */
-/*   Updated: 2024/12/03 20:42:07 by mbendidi         ###   ########.fr       */
+/*   Created: 2024/12/04 16:15:24 by mbendidi          #+#    #+#             */
+/*   Updated: 2024/12/04 16:17:27 by mbendidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,19 @@ void	ft_get_color_scheme(double t, int color_mode, t_color *color)
 	}
 }
 
-void	ft_putchar_fd(char c, int fd)
+int	calculate_color(int iter, double zx, double zy, t_fractal *fractal)
 {
-	write(fd, &c, 1);
-}
+	double	log_zn;
+	double	nu;
+	double	smooth_index;
 
-void	ft_putstr_fd(char const *s, int fd)
-{
-	int	i;
-
-	i = 0;
-	if (!s)
-		return ;
-	while (s[i])
-		ft_putchar_fd(s[i++], fd);
+	if (iter < fractal->iteration_definition)
+	{
+		log_zn = log(zx * zx + zy * zy) / 2.0;
+		nu = log(log_zn / log(2.0)) / log(2.0);
+		smooth_index = iter + 1 - nu;
+		return (get_color(smooth_index, fractal->iteration_definition,
+				fractal->color_mode));
+	}
+	return (BLACK);
 }

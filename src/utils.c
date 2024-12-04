@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   funct_utils1.c                                     :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbendidi <mbendidi@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/02 15:22:17 by mbendidi          #+#    #+#             */
-/*   Updated: 2024/12/03 20:42:05 by mbendidi         ###   ########.fr       */
+/*   Created: 2024/12/04 16:04:10 by mbendidi          #+#    #+#             */
+/*   Updated: 2024/12/04 16:38:15 by mbendidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ double	ft_atodbl(char *s)
 {
 	long	n;
 	double	fn;
-	double	pow;
 	int		sign;
 	int		i;
 
@@ -24,7 +23,6 @@ double	ft_atodbl(char *s)
 	i = 0;
 	fn = 0.0;
 	sign = 1;
-	pow = 1;
 	while ((s[i] >= 9 && s[i] <= 13) || s[i] == 32)
 		i++;
 	while (s[i] == '+' || s[i] == '-')
@@ -79,4 +77,18 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	if (n)
 		return (*((unsigned char *)s1 + i) - *((unsigned char *)s2 + i));
 	return (0);
+}
+
+void	ft_putstr_fd(char const *s, int fd)
+{
+	int	i;
+
+	i = 0;
+	if (!s)
+		return ;
+	while (s[i])
+	{
+		write(fd, &s[i], 1);
+		i++;
+	}
 }

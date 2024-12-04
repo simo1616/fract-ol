@@ -6,28 +6,19 @@
 /*   By: mbendidi <mbendidi@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 17:52:13 by mbendidi          #+#    #+#             */
-/*   Updated: 2024/12/03 20:42:12 by mbendidi         ###   ########.fr       */
+/*   Updated: 2024/12/04 15:48:27 by mbendidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractal.h"
 
-static void	init_mandelbrot_burning_ship(char **av, t_fractal *fractal)
+static void	print_error_and_exit(void)
 {
-	fractal->name = av[1];
-	fractal_init(fractal);
-	fractal_render(fractal);
-	mlx_loop(fractal->mlx_ptr);
-}
-
-static void	init_julia(char **av, t_fractal *fractal)
-{
-	fractal->name = av[1];
-	fractal->julia_x = ft_atodbl(av[2]);
-	fractal->julia_y = ft_atodbl(av[3]);
-	fractal_init(fractal);
-	fractal_render(fractal);
-	mlx_loop(fractal->mlx_ptr);
+	ft_putstr_fd("Please enter:\n\t"
+		"\"./fractol mandelbrot\" or\n\t"
+		"\"./fractol julia <value_1> <value_2>\" or\n\t"
+		"\"./fractol burning_ship\"\n", STDERR_FILENO);
+	exit(EXIT_FAILURE);
 }
 
 int	main(int ac, char **av)
@@ -36,18 +27,20 @@ int	main(int ac, char **av)
 
 	if (ac < 2)
 	{
-		ft_putstr_fd(ERROR_MESSAGE, STDERR_FILENO);
-		exit(EXIT_FAILURE);
+		print_error_and_exit();
 	}
 	if (ac == 2 && (!ft_strncmp(av[1], "mandelbrot", 10)
 			|| !ft_strncmp(av[1], "burning_ship", 12)))
+	{
 		init_mandelbrot_burning_ship(av, &fractal);
+	}
 	else if (ac == 4 && !ft_strncmp(av[1], "julia", 5))
+	{
 		init_julia(av, &fractal);
+	}
 	else
 	{
-		ft_putstr_fd(ERROR_MESSAGE, STDERR_FILENO);
-		exit(EXIT_FAILURE);
+		print_error_and_exit();
 	}
 	return (0);
 }

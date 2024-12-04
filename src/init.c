@@ -6,16 +6,21 @@
 /*   By: mbendidi <mbendidi@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:50:30 by mbendidi          #+#    #+#             */
-/*   Updated: 2024/12/03 20:58:35 by mbendidi         ###   ########.fr       */
+/*   Updated: 2024/12/04 15:43:57 by mbendidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractal.h"
 
-void	malloc_error(void)
+void	fractal_init(t_fractal *fractal)
 {
-	perror("Problems with malloc");
-	exit(EXIT_FAILURE);
+	fractal->mlx_ptr = mlx_init();
+	if (!fractal->mlx_ptr)
+		malloc_error();
+	window_init(fractal);
+	image_init(fractal);
+	events_init(fractal);
+	data_init(fractal);
 }
 
 void	data_init(t_fractal *fractal)
@@ -28,13 +33,8 @@ void	data_init(t_fractal *fractal)
 	fractal->color_mode = 0;
 }
 
-void	fractal_init(t_fractal *fractal)
+void	malloc_error(void)
 {
-	fractal->mlx_ptr = mlx_init();
-	if (!fractal->mlx_ptr)
-		malloc_error();
-	window_init(fractal);
-	image_init(fractal);
-	events_init(fractal);
-	data_init(fractal);
+	perror("Problems with malloc");
+	exit(EXIT_FAILURE);
 }

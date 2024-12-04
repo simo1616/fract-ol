@@ -6,7 +6,7 @@
 /*   By: mbendidi <mbendidi@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 14:09:12 by mbendidi          #+#    #+#             */
-/*   Updated: 2024/12/03 21:14:08 by mbendidi         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:03:21 by mbendidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,6 @@ void	my_pixel_put(int x, int y, t_img *img, int color)
 
 	offset = (y * img->line_size) + (x * img->bpp / 8);
 	*(unsigned int *)(img->pixel_ptr + offset) = color;
-}
-
-void	process_burning_ship(double *zx, double *zy)
-{
-	*zx = fabs(*zx);
-	*zy = fabs(*zy);
 }
 
 void	get_initial_values(int x, int y, t_fractal *fractal, t_complex *z)
@@ -45,19 +39,8 @@ void	get_initial_values(int x, int y, t_fractal *fractal, t_complex *z)
 	z->y = map(args_y);
 }
 
-int	calculate_color(int iteration, double zx, double zy, t_fractal *fractal)
+void	process_burning_ship(double *zx, double *zy)
 {
-	double	log_zn;
-	double	nu;
-	double	smooth_index;
-
-	if (iteration < fractal->iteration_definition)
-	{
-		log_zn = log(zx * zx + zy * zy) / 2.0;
-		nu = log(log_zn / log(2.0)) / log(2.0);
-		smooth_index = iteration + 1 - nu;
-		return (get_color(smooth_index, fractal->iteration_definition,
-				fractal->color_mode));
-	}
-	return (BLACK);
+	*zx = fabs(*zx);
+	*zy = fabs(*zy);
 }

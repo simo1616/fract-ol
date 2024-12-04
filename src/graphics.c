@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_window.c                                      :+:      :+:    :+:   */
+/*   graphics.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbendidi <mbendidi@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/03 19:53:49 by mbendidi          #+#    #+#             */
-/*   Updated: 2024/12/03 20:42:09 by mbendidi         ###   ########.fr       */
+/*   Created: 2024/12/04 16:18:04 by mbendidi          #+#    #+#             */
+/*   Updated: 2024/12/04 16:26:17 by mbendidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,4 @@ void	image_init(t_fractal *fractal)
 		free(fractal->mlx_ptr);
 		malloc_error();
 	}
-}
-
-void	events_init(t_fractal *fractal)
-{
-	mlx_hook(fractal->win_ptr, KeyPress, KeyPressMask, key_handler, fractal);
-	mlx_hook(fractal->win_ptr, ButtonPress, ButtonPressMask, mouse_handler,
-		fractal);
-	mlx_hook(fractal->win_ptr, DestroyNotify, StructureNotifyMask,
-		close_handler, fractal);
-	mlx_hook(fractal->win_ptr, MotionNotify, PointerMotionMask, julia_track,
-		fractal);
 }

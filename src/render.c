@@ -5,37 +5,31 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbendidi <mbendidi@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/01 14:09:12 by mbendidi          #+#    #+#             */
-/*   Updated: 2024/12/03 20:42:17 by mbendidi         ###   ########.fr       */
+/*   Created: 2024/12/04 15:59:31 by mbendidi          #+#    #+#             */
+/*   Updated: 2024/12/04 16:37:16 by mbendidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractal.h"
 
-static void	calculate_fractal(t_complex *z, t_complex *c,
-	int *index, t_fractal *fractal)
+void	fractal_render(t_fractal *fractal)
 {
-	double	xtemp;
+	int	x;
+	int	y;
 
-	while (*index < fractal->iteration_definition)
+	y = 0;
+	while (y < HEIGHT)
 	{
-		if (!ft_strncmp(fractal->name, "burning_ship", 12))
-			process_burning_ship(&z->x, &z->y);
-		xtemp = z->x * z->x - z->y * z->y + c->x;
-		z->y = 2 * z->x * z->y + c->y;
-		z->x = xtemp;
-		if ((z->x * z->x + z->y * z->y) > fractal->escape_value)
-			break ;
-		(*index)++;
+		x = 0;
+		while (x < WIDTH)
+		{
+			handle_pixel(x, y, fractal);
+			x++;
+		}
+		y++;
 	}
-}
-
-static void	process_pixel_color(t_pixel *pixel, int index, t_fractal *fractal)
-{
-	int	color;
-
-	color = calculate_color(index, pixel->z.x, pixel->z.y, fractal);
-	my_pixel_put(pixel->x, pixel->y, &fractal->img, color);
+	mlx_put_image_to_window(fractal->mlx_ptr, fractal->win_ptr,
+		fractal->img.img_ptr, 0, 0);
 }
 
 void	handle_pixel(int x, int y, t_fractal *fractal)
@@ -64,22 +58,28 @@ void	handle_pixel(int x, int y, t_fractal *fractal)
 	process_pixel_color(&pixel, index, fractal);
 }
 
-void	fractal_render(t_fractal *fractal)
+void	calculate_fractal(t_complex *z, t_complex *c,
+	int *index, t_fractal *fractal)
 {
-	int	x;
-	int	y;
+	double	xtemp;
 
-	y = 0;
-	while (y < HEIGHT)
+	while (*index < fractal->iteration_definition)
 	{
-		x = 0;
-		while (x < WIDTH)
-		{
-			handle_pixel(x, y, fractal);
-			x++;
-		}
-		y++;
+		if (!ft_strncmp(fractal->name, "burning_ship", 12))
+			process_burning_ship(&z->x, &z->y);
+		xtemp = z->x * z->x - z->y * z->y + c->x;
+		z->y = 2 * z->x * z->y + c->y;
+		z->x = xtemp;
+		if ((z->x * z->x + z->y * z->y) > fractal->escape_value)
+			break ;
+		(*index)++;
 	}
-	mlx_put_image_to_window(fractal->mlx_ptr, fractal->win_ptr,
-		fractal->img.img_ptr, 0, 0);
+}
+
+void	process_pixel_color(t_pixel *pixel, int index, t_fractal *fractal)
+{
+	int	color;
+
+	color = calculate_color(index, pixel->z.x, pixel->z.y, fractal);
+	my_pixel_put(pixel->x, pixel->y, &fractal->img, color);
 }
